@@ -1,0 +1,12 @@
+{
+  "unit": "metric",
+  "lastLocation": "New York",
+  "favorites": [
+    "New York, NY, USA",
+    "London, UK",
+    "Tokyo, Japan"
+  ],
+  "theme": "auto",
+  "notifications": true,
+  "refreshInterval": 300000
+}

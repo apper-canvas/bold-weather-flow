@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "location": "New York",
+    "temp": 22,
+    "feelsLike": 25,
+    "condition": "Partly Cloudy",
+    "description": "partly cloudy with gentle breeze",
+    "humidity": 65,
+    "windSpeed": 12,
+    "icon": "partly-cloudy",
+    "visibility": 10,
+    "pressure": 1013,
+    "uvIndex": 6
+  },
+  {
+    "id": 2,
+    "location": "London",
+    "temp": 18,
+    "feelsLike": 16,
+    "condition": "Light Rain",
+    "description": "light rain with overcast skies",
+    "humidity": 85,
+    "windSpeed": 8,
+    "icon": "rain",
+    "visibility": 7,
+    "pressure": 1008,
+    "uvIndex": 2
+  },
+  {
+    "id": 3,
+    "location": "Tokyo",
+    "temp": 28,
+    "feelsLike": 32,
+    "condition": "Sunny",
+    "description": "clear skies with bright sunshine",
+    "humidity": 45,
+    "windSpeed": 6,
+    "icon": "sunny",
+    "visibility": 12,
+    "pressure": 1018,
+    "uvIndex": 8
+  },
+  {
+    "id": 4,
+    "location": "Sydney",
+    "temp": 24,
+    "feelsLike": 26,
+    "condition": "Cloudy",
+    "description": "mostly cloudy with mild temperatures",
+    "humidity": 70,
+    "windSpeed": 10,
+    "icon": "cloudy",
+    "visibility": 9,
+    "pressure": 1015,
+    "uvIndex": 4
+  },
+  {
+    "id": 5,
+    "location": "Paris",
+    "temp": 20,
+    "feelsLike": 22,
+    "condition": "Clear",
+    "description": "clear skies with pleasant weather",
+    "humidity": 55,
+    "windSpeed": 5,
+    "icon": "clear",
+    "visibility": 11,
+    "pressure": 1020,
+    "uvIndex": 7
+  }
+]

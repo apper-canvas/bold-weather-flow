@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import react-toastify CSS */
+@import 'react-toastify/dist/ReactToastify.css';
+
+/* Ensure scrollbars are visible */
+body {
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin: 0;
+  min-height: 100vh;
+}
+
+/* Prevent horizontal overflow */
+* {
+  max-width: 100%;
+}
+
+/* Main content areas must allow scroll */
+.main-content {
+  overflow-y: auto;
+  height: 100vh;
+}
+
+@layer utilities {
+  /* Only use scrollbar-hide for specific UI elements, never main content */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Weather theme backgrounds */
+.weather-sunny {
+  background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 50%, #fbbf24 100%);
+}
+
+.weather-cloudy {
+  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 50%, #cbd5e1 100%);
+}
+
+.weather-rainy {
+  background: linear-gradient(135deg, #dbeafe 0%, #93c5fd 50%, #3b82f6 100%);
+}
+
+.weather-snowy {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
+}
+
+.weather-stormy {
+  background: linear-gradient(135deg, #334155 0%, #1e293b 50%, #0f172a 100%);
+}
+
+/* Custom search dropdown */
+.search-dropdown {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Weather icon animations */
+.weather-icon {
+  transition: transform 0.3s ease;
+}
+
+.weather-icon:hover {
+  transform: scale(1.1);
+}
+
+/* Temperature color coding */
+.temp-cold {
+  color: #3b82f6;
+}
+
+.temp-cool {
+  color: #06b6d4;
+}
+
+.temp-mild {
+  color: #10b981;
+}
+
+.temp-warm {
+  color: #f59e0b;
+}
+
+.temp-hot {
+  color: #ef4444;
+}

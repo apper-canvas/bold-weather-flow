@@ -1,0 +1,52 @@
+[
+  {
+    "date": "2024-01-20",
+    "high": 25,
+    "low": 18,
+    "condition": "Sunny",
+    "icon": "sunny",
+    "precipitation": 0,
+    "humidity": 50,
+    "windSpeed": 8
+  },
+  {
+    "date": "2024-01-21",
+    "high": 23,
+    "low": 16,
+    "condition": "Partly Cloudy",
+    "icon": "partly-cloudy",
+    "precipitation": 10,
+    "humidity": 60,
+    "windSpeed": 12
+  },
+  {
+    "date": "2024-01-22",
+    "high": 20,
+    "low": 14,
+    "condition": "Light Rain",
+    "icon": "rain",
+    "precipitation": 75,
+    "humidity": 80,
+    "windSpeed": 15
+  },
+  {
+    "date": "2024-01-23",
+    "high": 19,
+    "low": 12,
+    "condition": "Cloudy",
+    "icon": "cloudy",
+    "precipitation": 20,
+    "humidity": 70,
+    "windSpeed": 10
+  },
+  {
+    "date": "2024-01-24",
+    "high": 22,
+    "low": 15,
+    "condition": "Partly Cloudy",
+    "icon": "partly-cloudy",
+    "precipitation": 5,
+    "humidity": 55,
+    "windSpeed": 7
+  }
+]
