@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { routeArray } from './config/routes';
 import Layout from './Layout';
-import NotFound from './pages/NotFound';
+import NotFoundPage from '@/components/pages/NotFoundPage';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
@@ -33,7 +33,7 @@ function App() {
               />
             ))}
           </Route>
-          <Route path="*" element={<NotFound />} />
+<Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>
     </BrowserRouter>

@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
-import MainFeature from '../components/MainFeature';
-import { weatherService } from '../services';
+import { weatherService } from '@/services';
+import SearchAndControls from '@/components/organisms/SearchAndControls';
+import CurrentWeatherSection from '@/components/organisms/CurrentWeatherSection';
+import ForecastSection from '@/components/organisms/ForecastSection';
+import LoadingSkeleton from '@/components/organisms/LoadingSkeleton';
+import ErrorState from '@/components/organisms/ErrorState';
 
-const Home = () => {
+const HomePage = () => {
   const [currentWeather, setCurrentWeather] = useState(null);
   const [forecast, setForecast] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -15,36 +19,7 @@ const Home = () => {
   const [units, setUnits] = useState('metric');
   const [weatherTheme, setWeatherTheme] = useState('cloudy');
 
-  // Load user preferences and default weather
-  useEffect(() => {
-    const loadInitialData = async () => {
-      setLoading(true);
-      setError(null);
-      
-      try {
-        // Load preferences
-        const preferences = await weatherService.getUserPreferences();
-        setUnits(preferences.unit);
-        
-        // Load default or last location weather
-        const defaultLocation = preferences.lastLocation || 'New York';
-        const weather = await weatherService.getCurrentWeather(defaultLocation, preferences.unit);
-        const forecastData = await weatherService.getForecast(defaultLocation, preferences.unit);
-        
-        setCurrentWeather(weather);
-        setForecast(forecastData);
-        setWeatherTheme(getWeatherTheme(weather.condition));
-      } catch (err) {
-        setError(err.message || 'Failed to load weather data');
-        toast.error('Failed to load weather data');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadInitialData();
-  }, []);
-
+  // Helper functions
   const getWeatherTheme = (condition) => {
     const conditionLower = condition.toLowerCase();
     if (conditionLower.includes('sun') || conditionLower.includes('clear')) {
@@ -59,6 +34,64 @@ const Home = () => {
       return 'cloudy';
     }
   };
+
+  const getWeatherIcon = (condition) => {
+    const conditionLower = condition.toLowerCase();
+    if (conditionLower.includes('sun') || conditionLower.includes('clear')) {
+      return 'Sun';
+    } else if (conditionLower.includes('rain') || conditionLower.includes('drizzle')) {
+      return 'CloudRain';
+    } else if (conditionLower.includes('snow') || conditionLower.includes('blizzard')) {
+      return 'Snowflake';
+    } else if (conditionLower.includes('storm') || conditionLower.includes('thunder')) {
+      return 'Zap';
+    } else if (conditionLower.includes('cloud')) {
+      return 'Cloud';
+    } else {
+      return 'Cloud';
+    }
+  };
+
+  const getTemperatureColor = (temp) => {
+    if (temp < 0) return 'temp-cold';
+    if (temp < 10) return 'temp-cool';
+    if (temp < 20) return 'temp-mild';
+    if (temp < 30) return 'temp-warm';
+    return 'temp-hot';
+  };
+
+  const formatTemperature = (temp) => {
+    return Math.round(temp);
+  };
+
+  // Load user preferences and default weather
+  useEffect(() => {
+    const loadInitialData = async () => {
+      setLoading(true);
+      setError(null);
+      
+      try {
+        const preferences = await weatherService.getUserPreferences();
+        setUnits(preferences.unit);
+        
+        const defaultLocation = preferences.lastLocation || 'New York';
+        const weather = await weatherService.getCurrentWeather(defaultLocation, preferences.unit);
+        const forecastData = await weatherService.getForecast(defaultLocation, preferences.unit);
+        
+        setCurrentWeather(weather);
+        setForecast(forecastData);
+        setWeatherTheme(getWeatherTheme(weather.condition));
+        setSearchQuery(weather.location); // Set initial search query to loaded location
+      } catch (err) {
+        setError(err.message || 'Failed to load initial weather data');
+        toast.error('Failed to load initial weather data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadInitialData();
+  }, []);
 
   const handleSearch = async (query) => {
     if (query.length < 3) {
@@ -92,7 +125,6 @@ const Home = () => {
       setForecast(forecastData);
       setWeatherTheme(getWeatherTheme(weather.condition));
       
-      // Save location preference
       await weatherService.updateUserPreferences({ lastLocation: location });
       
       toast.success(`Weather updated for ${location}`);
@@ -125,7 +157,6 @@ const Home = () => {
           setWeatherTheme(getWeatherTheme(weather.condition));
           setSearchQuery(weather.location);
           
-          // Save location preference
           await weatherService.updateUserPreferences({ lastLocation: weather.location });
           
           toast.success('Weather updated for your location');
@@ -136,8 +167,9 @@ const Home = () => {
           setLoading(false);
         }
       },
-      () => {
+      (geoError) => {
         setLoading(false);
+        setError(geoError.message || 'Unable to retrieve your location');
         toast.error('Unable to retrieve your location');
       }
     );
@@ -147,10 +179,8 @@ const Home = () => {
     const newUnits = units === 'metric' ? 'imperial' : 'metric';
     setUnits(newUnits);
     
-    // Save preference
     await weatherService.updateUserPreferences({ unit: newUnits });
     
-    // Reload current weather with new units
     if (currentWeather) {
       try {
         setLoading(true);
@@ -161,6 +191,7 @@ const Home = () => {
         setForecast(forecastData);
       } catch (err) {
         toast.error('Failed to update units');
+        setError(err.message || 'Failed to update units');
       } finally {
         setLoading(false);
       }
@@ -204,25 +235,44 @@ const Home = () => {
           </p>
         </motion.div>
 
-        <MainFeature
-          currentWeather={currentWeather}
-          forecast={forecast}
-          loading={loading}
-          error={error}
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          searchResults={searchResults}
-          showResults={showResults}
-          onSearch={handleSearch}
-          onLocationSelect={handleLocationSelect}
-          onGetCurrentLocation={handleGetCurrentLocation}
-          units={units}
-          onUnitsToggle={handleUnitsToggle}
-          weatherTheme={weatherTheme}
-        />
+        {loading ? (
+          <LoadingSkeleton />
+        ) : error && !currentWeather ? (
+          <ErrorState error={error} onTryAgain={() => window.location.reload()} />
+        ) : (
+          <div className="space-y-6">
+            <SearchAndControls
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              searchResults={searchResults}
+              showResults={showResults}
+              onSearch={handleSearch}
+              onLocationSelect={handleLocationSelect}
+              onGetCurrentLocation={handleGetCurrentLocation}
+              units={units}
+              onUnitsToggle={handleUnitsToggle}
+            />
+
+            <CurrentWeatherSection
+              currentWeather={currentWeather}
+              units={units}
+              getWeatherIcon={getWeatherIcon}
+              getTemperatureColor={getTemperatureColor}
+              formatTemperature={formatTemperature}
+              weatherTheme={weatherTheme}
+            />
+
+            <ForecastSection
+              forecast={forecast}
+              units={units}
+              getWeatherIcon={getWeatherIcon}
+              formatTemperature={formatTemperature}
+            />
+          </div>
+        )}
       </div>
     </motion.div>
   );
 };
 
-export default Home;
+export default HomePage;

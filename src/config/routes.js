@@ -1,5 +1,5 @@
-import Home from '../pages/Home';
-import NotFound from '../pages/NotFound';
+import HomePage from '@/components/pages/HomePage';
+// NotFoundPage is directly imported by App.jsx for the "*" route, not managed in routeArray
 
 export const routes = {
   home: {
@@ -7,7 +7,7 @@ export const routes = {
     label: 'Weather',
     path: '/',
     icon: 'Cloud',
-    component: Home
+component: HomePage
   }
 };
 
